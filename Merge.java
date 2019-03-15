@@ -22,7 +22,22 @@ public class Merge {
     }
     mergesort(right, 0, right.length-1);
     // merge right and left into data
-    
+    int index = 0;
+    for (int i = 0; i < left.length; i++) {
+      if (left[i] <= right[i]) {
+        data[index] = left[i];
+        data[index+1] = right[i];
+        index += 2;
+      } else {
+        data[index] = right[i];
+        data[index+1] = left[i];
+        index += 2;
+      }
+      // taking care of extra element
+      if (i == left.length - 1 && right.length > left.length) {
+        data[index] = right[right.length-1];
+      }
+    }
   }
 
 
