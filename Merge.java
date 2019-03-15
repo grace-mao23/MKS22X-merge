@@ -22,8 +22,9 @@ public class Merge {
     }
     mergesort(right, 0, right.length-1);
     // merge right and left into data
-    int index = 0;
+    int index = 0; // index being replaced in data
     for (int i = 0; i < left.length; i++) {
+      // checking which to put first
       if (left[i] <= right[i]) {
         data[index] = left[i];
         data[index+1] = right[i];
