@@ -1,3 +1,5 @@
+import java.util.*;
+
 public class Merge {
 
   public static void mergesort(int[]data) {
@@ -8,10 +10,11 @@ public class Merge {
     if (lo >= hi) { // most likely equal, when there is only one element
       return;
     }
+    System.out.println(Arrays.toString(data));
     int half = data.length / 2;
     // mergesort left --> making left array
     int[] left = new int[half];
-    for (int i = 0; i <= left.length; i++) {
+    for (int i = 0; i < left.length; i++) {
       left[i] = data[i];
     }
     mergesort(left, 0, left.length-1);
@@ -23,7 +26,28 @@ public class Merge {
     mergesort(right, 0, right.length-1);
     // merge right and left into data
     int index = 0; // index being replaced in data
-    for (int i = 0; i < left.length; i++) {
+    int indexL = 0;
+    int indexR = 0;
+    while (index < data.length) {
+      if (indexL >= left.length) {
+        data[index] = right[indexR];
+        indexR++;
+        index++;
+      } else if (indexR >= right.length) {
+        data[index] = left[indexL];
+        indexL++;
+        index++;
+      } else if (left[indexL] <= right[indexR]) {
+        data[index] = left[indexL];
+        indexL++;
+        index++;
+      } else {
+        data[index] = right[indexR];
+        indexR++;
+        index++;
+      }
+    }
+    /*for (int i = 0; i < left.length; i++) {
       // checking which to put first
       if (left[i] <= right[i]) {
         data[index] = left[i];
@@ -38,9 +62,15 @@ public class Merge {
       if (i == left.length - 1 && right.length > left.length) {
         data[index] = right[right.length-1];
       }
-    }
+    } */
+    System.out.println("M: "+Arrays.toString(data));
   }
 
+  public static void main(String[] args) {
+    int[] t = new int[] { 2, 5, 3, 8, 1, 9, 0, 4, 7, 6 };
+    Merge.mergesort(t);
+    System.out.println(Arrays.toString(t));
+  }
 
 
 /*  Pseudocode
