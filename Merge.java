@@ -67,7 +67,7 @@ public class Merge {
   }
 
   public static void main(String[] args) {
-    int[] t = new int[] { 2, 5, 3, 8, 1, 9, 0, 4, 7, 6 };
+    int[] t = new int[] { 2, 5, 3, 8, 1, 9, 0, 4, 7 };
     Merge.mergesort(t);
     System.out.println(Arrays.toString(t));
   }
