@@ -84,11 +84,11 @@ public class Merge {
   }
 
   public static void main(String[]args){
-    int[] test = new int[] { 2, 5, 6, 1, 0, 7, 3, 8, 4 };
-    int[] t = new int[] { 5, 2 };
-    Merge.mergesort(test);
-    System.out.println(Arrays.toString(test));
-    /* System.out.println("Size\t\tMax Value\tmerge/builtin ratio ");
+  //  int[] test = new int[] { 2, 5, 6, 1, 0, 7, 3, 8, 4 };
+    //int[] t = new int[] { 5, 2 };
+  //  Merge.mergesort(test);
+  //  System.out.println(Arrays.toString(test));
+    System.out.println("Size\t\tMax Value\tmerge/builtin ratio ");
     int[]MAX_LIST = {1000000000,500,10};
     for(int MAX : MAX_LIST){
       for(int size = 31250; size < 2000001; size*=2){
@@ -119,7 +119,7 @@ public class Merge {
         System.out.println(size +"\t\t"+MAX+"\t"+1.0*qtime/btime);
       }
       System.out.println();
-    } */
+    }
   }
 
 
