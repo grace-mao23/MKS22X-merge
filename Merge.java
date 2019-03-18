@@ -3,7 +3,11 @@ import java.util.*;
 public class Merge {
 
   public static void mergesort(int[]data) {
-    mergesort(data, 0, data.length-1);
+    int[] temp = new int[data.length];
+    for (int i = 0; i < data.length; i++) {
+      temp[i] = data[i];
+    }
+    mergeQ(data, temp, 0, data.length-1);
   }
 
   private static void mergesort(int[] data, int lo, int hi) {
@@ -47,32 +51,44 @@ public class Merge {
         index++;
       }
     }
-    /*for (int i = 0; i < left.length; i++) {
-      // checking which to put first
-      if (left[i] <= right[i]) {
-        data[index] = left[i];
-        data[index+1] = right[i];
-        index += 2;
-      } else {
-        data[index] = right[i];
-        data[index+1] = left[i];
-        index += 2;
-      }
-      // taking care of extra element
-      if (i == left.length - 1 && right.length > left.length) {
-        data[index] = right[right.length-1];
-      }
-    } */
-    //System.out.println("M: "+Arrays.toString(data));
   }
 
-  /*public static void main(String[] args) {
-    int[] t = new int[] { 2, 5, 3, 8, 1, 9, 0, 4, 7 };
-    Merge.mergesort(t);
-    System.out.println(Arrays.toString(t));
-  } */
+  private static void mergeQ(int[] data, int[] temp, int lo, int hi) {
+    if (lo >= hi) { // most likely equal, when there is only one element
+      return;
+    }
+    int half = (hi + lo) / 2;
+    mergeQ(temp, data, lo, half);
+    mergeQ(temp, data, half + 1, hi);
+    // merge right and left into data
+    int index = lo; // index being replaced in data
+    int indexL = lo; // 0
+    int indexR = half+1; // 1
+    while (index <= hi) {
+      if (indexR > hi) {
+        data[index] = temp[indexL];
+        indexL++;
+      } else if (indexL > half) {
+        data[index] = temp[indexR];
+        indexR++;
+      } else if (temp[indexL] <= temp[indexR]) {
+        data[index] = temp[indexL];
+        indexL++;
+      } else {
+        data[index] = temp[indexR];
+        indexR++;
+      }
+      index++;
+    }
+    //System.out.println(Arrays.toString(data)+" , " + Arrays.toString(temp));
+  }
+
   public static void main(String[]args){
-    System.out.println("Size\t\tMax Value\tmerge/builtin ratio ");
+    int[] test = new int[] { 2, 5, 6, 1, 0, 7, 3, 8, 4 };
+    int[] t = new int[] { 5, 2 };
+    Merge.mergesort(test);
+    System.out.println(Arrays.toString(test));
+    /* System.out.println("Size\t\tMax Value\tmerge/builtin ratio ");
     int[]MAX_LIST = {1000000000,500,10};
     for(int MAX : MAX_LIST){
       for(int size = 31250; size < 2000001; size*=2){
@@ -103,7 +119,7 @@ public class Merge {
         System.out.println(size +"\t\t"+MAX+"\t"+1.0*qtime/btime);
       }
       System.out.println();
-    }
+    } */
   }
 
 
