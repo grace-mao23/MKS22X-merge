@@ -1,6 +1,12 @@
 import java.util.*;
 
 public class Merge {
+  // testing stuff
+  private static final int INCREASE = 0;
+  private static final int DECREASE = 1;
+  private static final int STANDARD = 2;
+  private static final int SMALL_RANGE = 3;
+  // end of testing stuff
 
   public static void mergesort(int[]data) {
     int[] temp = new int[data.length];
@@ -57,33 +63,49 @@ public class Merge {
     if (lo >= hi) { // most likely equal, when there is only one element
       return;
     }
-    int half = (hi + lo) / 2;
-    mergeQ(temp, data, lo, half);
-    mergeQ(temp, data, half + 1, hi);
-    // merge right and left into data
-    int index = lo; // index being replaced in data
-    int indexL = lo; // 0
-    int indexR = half+1; // 1
-    while (index <= hi) {
-      if (indexR > hi) {
-        data[index] = temp[indexL];
-        indexL++;
-      } else if (indexL > half) {
-        data[index] = temp[indexR];
-        indexR++;
-      } else if (temp[indexL] <= temp[indexR]) {
-        data[index] = temp[indexL];
-        indexL++;
-      } else {
-        data[index] = temp[indexR];
-        indexR++;
+    if ((hi - lo + 1) < 10) {
+      insertionSort(data, lo, hi);
+    } else {
+      int half = (hi + lo) / 2;
+      mergeQ(temp, data, lo, half);
+      mergeQ(temp, data, half + 1, hi);
+      // merge right and left into data
+      int index = lo; // index being replaced in data
+      int indexL = lo; // 0
+      int indexR = half+1; // 1
+      while (index <= hi) {
+        if (indexR > hi) {
+          data[index] = temp[indexL];
+          indexL++;
+        } else if (indexL > half) {
+          data[index] = temp[indexR];
+          indexR++;
+        } else if (temp[indexL] <= temp[indexR]) {
+          data[index] = temp[indexL];
+          indexL++;
+        } else {
+          data[index] = temp[indexR];
+          indexR++;
+        }
+        index++;
       }
-      index++;
     }
     //System.out.println(Arrays.toString(data)+" , " + Arrays.toString(temp));
   }
 
-  public static void main(String[]args){
+  private static void insertionSort(int[] data, int lo, int hi) {
+    for (int i = lo+1; i <= hi; i++) {
+      int current = data[i];
+      int j = i-1;
+      while (j >= lo && data[j] > current) {
+        data[j+1] = data[j];
+        j--;
+      }
+      data[j+1] = current;
+    }
+  }
+
+  /*public static void main(String[]args){
   //  int[] test = new int[] { 2, 5, 6, 1, 0, 7, 3, 8, 4 };
     //int[] t = new int[] { 5, 2 };
   //  Merge.mergesort(test);
@@ -119,6 +141,70 @@ public class Merge {
         System.out.println(size +"\t\t"+MAX+"\t"+1.0*qtime/btime);
       }
       System.out.println();
+    }
+  } */
+  private static String name(int i){
+    if(i==INCREASE)return "Increassing";
+    if(i==DECREASE)return "Decreassing";
+    if(i==STANDARD)return "Normal Random";
+    if(i==SMALL_RANGE)return "Random with Few Values";
+    return "Error categorizing array";
+
+  }
+
+  private static int create(int min, int max){
+    return min + (int)(Math.random()*(max-min));
+  }
+
+  private static int[] makeArray(int size,int type){
+    int[] ans = new int[size];
+    if(type == STANDARD){
+      for(int i = 0; i < size; i++){
+        ans[i]= create(-1000000,1000000);
+      }
+    } else if(type == INCREASE){
+      int current = -5 * size;
+      for(int i = 0; i < size; i++){
+        ans[i]= create(current,current + 10);
+        current += 10;
+      }
+    } else if(type == DECREASE){
+      int current = 5 * size;
+      for(int i = 0; i < size; i++){
+        ans[i]= create(current,current + 10);
+        current -= 10;
+      }
+    } else if(type == SMALL_RANGE){
+      for(int i = 0; i < size; i++){
+        ans[i]= create(-5,5);
+      }
+    } else {
+      ans = new int[0];//empty is default
+    }
+    return ans;
+  }
+
+  public static void main(String[]args){
+    if(args.length < 2)return;
+
+    int size =  Integer.parseInt(args[0]);
+    int type =   Integer.parseInt(args[1]);
+
+    int[] start = makeArray(size,type);
+    int[] result = Arrays.copyOf(start,start.length);
+    Arrays.sort(result);
+
+    long startTime = System.currentTimeMillis();
+    /*
+     * Test your sort here //yoursort(start);
+     * Add code to switch which sort is tested by changing one of the args!
+     */
+    Merge.mergesort(start);
+    long elapsedTime = System.currentTimeMillis() - startTime;
+    if(Arrays.equals(start,result)){
+      System.out.println("PASS Case "+name(type)+"\t array, size:"+start.length+"\t"+elapsedTime/1000.0+"sec ");
+    } else{
+      System.out.println("FAIL ! ERROR ! "+name(type)+" array, size:"+size+"  ERROR!");
     }
   }
 
