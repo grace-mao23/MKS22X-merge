@@ -63,7 +63,7 @@ public class Merge {
     if (lo >= hi) { // most likely equal, when there is only one element
       return;
     }
-    if ((hi - lo + 1) < 10) {
+    if ((hi - lo + 1) < 100) {
       insertionSort(data, lo, hi);
     } else {
       int half = (hi + lo) / 2;
